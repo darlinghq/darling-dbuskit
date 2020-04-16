@@ -35,7 +35,14 @@
 #import <Foundation/NSTimer.h>
 #import <Foundation/NSValue.h>
 #import <Foundation/NSPortCoder.h>
+
+#ifndef DARLING
 #import <GNUstepBase/NSDebug+GNUstepBase.h>
+#else
+#import "config.h"
+#import <CoreFoundation/CFSocket.h>
+#import <CoreFoundation/CFRunLoop.h>
+#endif
 
 #import "DBusKit/DKPort.h"
 #import "DKEndpointManager.h"
@@ -108,6 +115,7 @@ DKRelease(void *ptr);
 - (NSString*)runLoopMode;
 @end
 
+#ifndef DARLING
 /**
  * Watcher object to monitor the file descriptors D-Bus signals on.
  */
@@ -119,6 +127,20 @@ DKRelease(void *ptr);
   DKRunLoopContext *ctx;
 }
 @end
+
+#else
+
+@interface DKWatcher: NSObject
+{
+  DBusWatch *watch;
+  BOOL callbackInProgress;
+  DKRunLoopContext *ctx;
+  CFSocketRef socket;
+  CFRunLoopSourceRef source;
+}
+@end
+
+#endif
 
 
 
@@ -467,6 +489,8 @@ DKRelease(void *ptr);
 @end
 
 @implementation DKWatcher
+
+#ifndef DARLING
 /**
  * Tells the run loop to monitor the events that D-Bus wants to monitor.
  */
@@ -514,6 +538,41 @@ DKRelease(void *ptr);
 
 }
 
+#else
+
+- (void)monitorForEvents
+{
+  CFRunLoopRef cfRunLoop = [[ctx runLoop] getCFRunLoop];
+  CFRunLoopAddSource(cfRunLoop, source, (CFStringRef) [ctx runLoopMode]);
+}
+
+- (void)unmonitorForEvents
+{
+  CFRunLoopRef cfRunLoop = [[ctx runLoop] getCFRunLoop];
+  CFRunLoopRemoveSource(cfRunLoop, source, (CFStringRef) [ctx runLoopMode]);
+}
+
+
+static void DKSocketCallback(
+  CFSocketRef socket,
+  CFSocketCallBackType callbackType,
+  CFDataRef address,
+  const void *data,
+  void *info
+) {
+  DKWatcher *self = (DKWatcher *) info;
+  if (callbackType == kCFSocketReadCallBack)
+    {
+      dbus_watch_handle(self->watch, DBUS_WATCH_READABLE);
+    }
+  else
+    {
+      dbus_watch_handle(self->watch, DBUS_WATCH_WRITABLE);
+    }
+}
+
+#endif
+
 - (id)initWithWatch: (DBusWatch*)_watch
          andContext: (DKRunLoopContext*)aCtx
               forFd: (int)fd
@@ -522,7 +581,23 @@ DKRelease(void *ptr);
     {
       return nil;
     }
+#ifndef DARLING
   fileDesc = fd;
+#else
+  CFSocketCallBackType callbackType = 0;
+  NSUInteger events = dbus_watch_get_flags(_watch);
+  if (events & DBUS_WATCH_READABLE)
+    {
+      callbackType |= kCFSocketReadCallBack;
+    }
+  if (events & DBUS_WATCH_WRITABLE)
+    {
+      callbackType |= kCFSocketWriteCallBack;
+    }
+  CFSocketContext context = { .info = self };
+  socket = CFSocketCreateWithNative(NULL, fd, callbackType, DKSocketCallback, &context);
+  source = CFSocketCreateRunLoopSource(NULL, socket, 0);
+#endif
   // The context retains its watchers and timers:
   ctx = aCtx;
   watch = _watch;
@@ -531,6 +606,7 @@ DKRelease(void *ptr);
 }
 
 
+#ifndef DARLING
 /**
  * Delegate method for event delivery by the run loop.
  */
@@ -561,6 +637,7 @@ DKRelease(void *ptr);
     }
   callbackInProgress = NO;
 }
+#endif
 
 - (void)dealloc
 {
@@ -569,6 +646,7 @@ DKRelease(void *ptr);
    * cannot ask libdbus what kind of event we were watching for. Hence, we
    * remove ourselves from the loop for all event types.
    */
+#ifndef DARLING
   [[ctx runLoop] removeEvent: (void*)(intptr_t)fileDesc
                         type: ET_RDESC
                      forMode: [ctx runLoopMode]
@@ -577,6 +655,18 @@ DKRelease(void *ptr);
                         type: ET_WDESC
                      forMode: [ctx runLoopMode]
                          all: NO];
+#else
+  if (source != NULL)
+    {
+      CFRelease(source);
+    }
+  if (socket != NULL)
+    {
+      // FIXME: does this close the fd? should it?
+      CFSocketInvalidate(socket);
+      CFRelease(socket);
+    }
+#endif
   [super dealloc];
 }
 @end

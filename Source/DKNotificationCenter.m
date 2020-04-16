@@ -46,7 +46,12 @@
 #import <Foundation/NSSet.h>
 #import <Foundation/NSString.h>
 #import <Foundation/NSValue.h>
+
+#ifndef DARLING
 #import <GNUstepBase/NSDebug+GNUstepBase.h>
+#else
+#import "config.h"
+#endif
 
 #include <inttypes.h>
 #include <stdint.h>

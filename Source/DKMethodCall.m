@@ -36,7 +36,11 @@
 #import <Foundation/NSString.h>
 #import <Foundation/NSThread.h>
 
+#ifndef DARLING
 #import <GNUstepBase/NSDebug+GNUstepBase.h>
+#else
+#import "config.h"
+#endif
 
 #include <sched.h>
 #include <string.h>

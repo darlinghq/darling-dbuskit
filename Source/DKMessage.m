@@ -27,7 +27,12 @@
 #import "DKEndpoint.h"
 
 #include <dbus/dbus.h>
+
+#ifndef DARLING
 #import <GNUstepBase/NSDebug+GNUstepBase.h>
+#else
+#import "config.h"
+#endif
 
 @implementation DKMessage
 

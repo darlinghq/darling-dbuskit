@@ -33,7 +33,12 @@
 #import <Foundation/NSInvocation.h>
 #import <Foundation/NSString.h>
 #import <Foundation/NSXMLNode.h>
+
+#ifndef DARLING
 #import <GNUstepBase/NSDebug+GNUstepBase.h>
+#else
+#import "config.h"
+#endif
 
 @implementation DKObjectPathNode
 

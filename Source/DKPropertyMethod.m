@@ -30,7 +30,12 @@
 #import <Foundation/NSInvocation.h>
 #import <Foundation/NSMethodSignature.h>
 #import <Foundation/NSString.h>
+
+#ifndef DARLING
 #import <GNUstepBase/NSDebug+GNUstepBase.h>
+#else
+#import "config.h"
+#endif
 
 #include <string.h>
 #include <dbus/dbus.h>

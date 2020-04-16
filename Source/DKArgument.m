@@ -39,7 +39,9 @@
 #import <Foundation/NSValue.h>
 #import <Foundation/NSXMLNode.h>
 
+#ifndef DARLING
 #import <GNUstepBase/NSDebug+GNUstepBase.h>
+#endif
 
 #import "DKProxy+Private.h"
 #import "DKPort+Private.h"
@@ -1581,9 +1583,9 @@ DKDBusTypeForUnboxingObject(id object)
 
 - (void) setIsDictionary: (BOOL)isDict
 {
-# ifndef NDEBUG
+#if !defined(NDEBUG) && !defined(DARLING)
   GSDebugAllocationRemove(object_getClass(self), self);
-# endif
+#endif
   if (isDict)
   {
     object_setClass(self,[DKDictionaryTypeArgument class]);
@@ -1595,7 +1597,7 @@ DKDBusTypeForUnboxingObject(id object)
     object_setClass(self,[DKArrayTypeArgument class]);
     [self setObjCEquivalent: [NSArray class]];
   }
-#ifndef NDEBUG
+#if !defined(NDEBUG) && !defined(DARLING)
   GSDebugAllocationAdd(object_getClass(self), self);
 #endif
 }

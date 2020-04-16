@@ -30,7 +30,12 @@
 #import "DKEndpointManager.h"
 #import <Foundation/NSException.h>
 #import <Foundation/NSInvocation.h>
+
+#ifndef DARLING
 #import <GNUstepBase/NSDebug+GNUstepBase.h>
+#else
+#import "config.h"
+#endif
 
 #include <dbus/dbus.h>
 

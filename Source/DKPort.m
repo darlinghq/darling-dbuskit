@@ -49,6 +49,7 @@
 #include <dbus/dbus.h>
 
 
+#ifndef DARLING
 /*
  * Enumeration of GNUstep DO message IDs, will need to be kept in sync with
  * GNUstepBase/DistributedObjects.h.
@@ -68,6 +69,7 @@ enum {
  PROXY_AT_PATH_REQUEST = 254,
  PROXY_AT_PATH_REPLY = 255
 };
+#endif
 
 @protocol DBus
 - (NSArray*)ListNames;
@@ -410,6 +412,7 @@ static DKPort *sharedSystemPort;
   return ([endpoint hash] ^ [remote hash]);
 }
 
+#ifndef DARLING
 /**
  * This is the main method used to dispatch stuff from the DO system to D-Bus.
  * Primarily we want to respond to ROOTPROXY_REQUEST, because everyting else
@@ -527,6 +530,7 @@ static DKPort *sharedSystemPort;
     *count=0;
   }
 }
+#endif
 
 /**
  * Required for NSPort compatibility.
@@ -535,6 +539,13 @@ static DKPort *sharedSystemPort;
 {
   return 0;
 }
+
+#ifdef DARLING
+- (void)scheduleInRunLoop: (NSRunLoop *) runLoop
+                  forMode: (NSRunLoopMode) mode
+{
+}
+#endif
 
 - (void)_cleanupExportedObjects
 {
@@ -589,6 +600,8 @@ static DKPort *sharedSystemPort;
 {
   [self invalidate];
 }
+
+#ifndef DARLING
 /**
  * Performs checks to ensure that the corresponding D-Bus service and object
  * path exist and sends a message to the delegate NSConnection object containing
@@ -657,6 +670,7 @@ static DKPort *sharedSystemPort;
   [proxyCoder release];
   return YES;
 }
+#endif
 
 
 /*

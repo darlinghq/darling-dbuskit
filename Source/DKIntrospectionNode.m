@@ -35,6 +35,10 @@
 #import <Foundation/NSXMLNode.h>
 #import <Foundation/NSXMLParser.h>
 
+#ifdef DARLING
+#import "config.h"
+#endif
+
 @implementation DKIntrospectionNode
 
 - (id) initWithName: (NSString*)aName

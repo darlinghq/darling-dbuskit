@@ -53,8 +53,10 @@
  * classes here inherit from NSObject, so that we can call +alloc -init on them
  * in order to initialize them before starting the worker thread.
  */
+#ifndef DARLING
 @interface GSStackTrace : NSObject @end
-@interface DKWatcher : NSObject <RunLoopEvents> @end
+#endif
+@interface DKWatcher : NSObject @end
 
 @interface DKEndpoint (Private)
 - (void)_mergeInfo: (NSDictionary*)info;
@@ -193,7 +195,9 @@ if (NO == DKRingEmpty)\
    * NOTE: This only works properly if we send instance methods (maybe
    * because the meta-class gets initialized otherwise?).
    */
+#ifndef DARLING
   [[[GSStackTrace alloc] init] release];
+#endif
   [[[NSException alloc] init] release];
   [[[NSTimer alloc] init] release];
   [[[DKWatcher alloc] init] release];

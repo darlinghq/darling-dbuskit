@@ -22,6 +22,10 @@
 
 #import "DBusKit/DKStruct.h"
 
+#ifdef DARLING
+#import "config.h"
+#endif
+
 @implementation NSArray (DBusKit)
 - (BOOL)isDBusStruct
 {

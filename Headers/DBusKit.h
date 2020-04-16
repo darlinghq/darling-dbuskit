@@ -26,4 +26,9 @@
 #import <DBusKit/DKProxy.h>
 #import <DBusKit/DKStruct.h>
 #import <DBusKit/DKVariant.h>
+
+#ifndef DARLING
 #import <DBusKit/NSConnection+DBus.h>
+#else
+#import <DBusKit/DKConnection.h>
+#endif

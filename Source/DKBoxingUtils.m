@@ -35,7 +35,9 @@
 #import <Foundation/NSFileHandle.h>
 #import <Foundation/NSValue.h>
 
+#ifndef DARLING
 #import <GNUstepBase/Unicode.h>
+#endif
 
 #include <dbus/dbus.h>
 #include <wctype.h>
@@ -570,7 +572,11 @@ DKMethodNameFromSelectorString(const char* selString)
 	i++;
 	if (iswlower(heapChars[i]))
 	{
+#ifndef DARLING
 	  heapChars[i] = uni_toupper(heapChars[i]);
+#else
+    heapChars[i] = toupper(heapChars[i]);
+#endif
 	}
       }
     }

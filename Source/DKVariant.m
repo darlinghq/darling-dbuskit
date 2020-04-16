@@ -26,6 +26,10 @@
 #import <Foundation/NSLocale.h>
 #import <Foundation/NSString.h>
 
+#ifdef DARLING
+#import "config.h"
+#endif
+
 #include <string.h>
 
 @implementation DKVariant

@@ -39,7 +39,11 @@
 #import <Foundation/NSXMLNode.h>
 #import <Foundation/NSPathUtilities.h>
 
+#ifndef DARLING
 #import <GNUstepBase/NSDebug+GNUstepBase.h>
+#else
+#import "config.h"
+#endif
 
 #if __OBJC_GC__
 #import <Foundation/NSGarbageCollector.h>

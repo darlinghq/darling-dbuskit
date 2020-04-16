@@ -18,5 +18,4 @@ config.log
 config.make
 config.status
 libtool
-Source/config.h
 autom4te.cache

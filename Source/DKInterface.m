@@ -28,7 +28,9 @@
 #import <Foundation/NSXMLNode.h>
 #import <Foundation/NSXMLParser.h>
 
+#ifndef DARLING
 #import <GNUstepBase/NSDebug+GNUstepBase.h>
+#endif
 
 #define INCLUDE_RUNTIME_H
 #include "config.h"

@@ -53,8 +53,11 @@
 #import <Foundation/NSXMLNode.h>
 #import <Foundation/NSXMLParser.h>
 #import <Foundation/NSPathUtilities.h>
+
+#ifndef DARLING
 #import <GNUstepBase/GSObjCRuntime.h>
 #import <GNUstepBase/NSDebug+GNUstepBase.h>
+#endif
 
 #include <string.h>
 
@@ -480,13 +483,14 @@ NSString *kDKDBusDocType = @"<!DOCTYPE node PUBLIC \"-//freedesktop//DTD D-BUS O
    * the signature from the associated method.
    */
   DKMethod *method = [self DBusMethodForSelector: aSelector];
+#ifndef DARLING
   const char *types = NULL;
   NSMethodSignature *theSig = nil;
   types = GSTypesFromSelector(aSelector);
 
   // Build a signature with the types:
   theSig = [NSMethodSignature signatureWithObjCTypes: types];
-
+#endif
   /*
    * Second chance to find the method: Remove mangling constructs from the
    * selector string.
@@ -516,7 +520,7 @@ NSString *kDKDBusDocType = @"<!DOCTYPE node PUBLIC \"-//freedesktop//DTD D-BUS O
     }
   }
 
-
+#ifndef DARLING
   // Finally check whether we have a sensible method and signature:
   if (nil == method)
   {
@@ -539,6 +543,9 @@ NSString *kDKDBusDocType = @"<!DOCTYPE node PUBLIC \"-//freedesktop//DTD D-BUS O
   }
 
   return nil;
+#else
+  return [method methodSignature];
+#endif
 }
 
 /**
@@ -661,7 +668,18 @@ NSString *kDKDBusDocType = @"<!DOCTYPE node PUBLIC \"-//freedesktop//DTD D-BUS O
 
 - (BOOL)isKindOfClass: (Class)aClass
 {
+#ifndef DARLING
   return GSObjCIsKindOf([self class], aClass);
+#else
+  for (Class cls = object_getClass(self); cls; cls = class_getSuperclass(cls))
+    {
+      if (cls == aClass)
+        {
+          return YES;
+        }
+    }
+  return NO;
+#endif
 }
 
 - (DKPort*)_port
