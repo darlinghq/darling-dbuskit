@@ -42,7 +42,10 @@
 #import <Foundation/NSThread.h>
 #import <Foundation/NSTimer.h>
 #import <Foundation/NSValue.h>
+#import <Foundation/NSAutoreleasePool.h>
 
+#include <stdlib.h>
+#include <inttypes.h>
 #include <sched.h>
 
 /*
@@ -142,7 +145,7 @@ if (NO == DKRingEmpty)\
   __sync_fetch_and_add(&producerCounter, 1);\
   [producerLock unlock];\
   NSDebugMLog(@"Inserting into ringbuffer (remaining capacity: %"PRIuPTR").",\
-    DKRingSpace);\
+    (unsigned long) DKRingSpace);\
 } while (0)
 
 
@@ -602,10 +605,11 @@ if (NO == DKRingEmpty)\
   // preformSynchronized == YES
   if (workerThreadIsCurrent || (YES == performSynchronized))
   {
-    IMP performRequest = [target methodForSelector: selector];
+    Class class = object_getClass(target);
+    IMP performRequest = class_getMethodImplementation(class, selector);
     NSDebugMLog(@"Performing on current thread");
-    NSAssert2(performRequest, @"Could not perform selector %@ on %@",
-      selector,
+    NSAssert2(performRequest, @"Could not perform selector %s on %@",
+      sel_getName(selector),
       target);
     if (YES == doWait)
     {

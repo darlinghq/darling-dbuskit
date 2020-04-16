@@ -25,7 +25,7 @@
 #import "DKNumberTemplate.h"
 #import <inttypes.h>
 
-DK_NUMBER_IMPLEMENTATION(int8_t, Int8, signed char, charValue, @"%i")
+DK_NUMBER_IMPLEMENTATION(int8_t, Int8, char, charValue, @"%i")
 DK_NUMBER_IMPLEMENTATION(uint8_t, UInt8, unsigned char, unsignedChar, @"%u")
 DK_NUMBER_IMPLEMENTATION(int16_t, Int16, short, shortValue, @"%i")
 DK_NUMBER_IMPLEMENTATION(uint16_t, UInt16, unsigned short, unsignedShortValue, @"%u")

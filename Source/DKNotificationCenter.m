@@ -48,6 +48,7 @@
 #import <Foundation/NSValue.h>
 #import <GNUstepBase/NSDebug+GNUstepBase.h>
 
+#include <inttypes.h>
 #include <stdint.h>
 #include <stdarg.h>
 #include <sched.h>
@@ -316,7 +317,7 @@
       match = @"";
     }
     [self setRule: match
-           forKey: [NSString stringWithFormat: @"arg%"PRIuPTR"", index]];
+           forKey: [NSString stringWithFormat: @"arg%"PRIuPTR"", (unsigned long) index]];
   }
 }
 

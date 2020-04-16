@@ -34,6 +34,7 @@
 #import <Foundation/NSString.h>
 #import <Foundation/NSTimer.h>
 #import <Foundation/NSValue.h>
+#import <Foundation/NSPortCoder.h>
 #import <GNUstepBase/NSDebug+GNUstepBase.h>
 
 #import "DBusKit/DKPort.h"

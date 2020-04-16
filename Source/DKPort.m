@@ -32,15 +32,18 @@
 #import <Foundation/NSConnection.h>
 #import <Foundation/NSDate.h>
 #import <Foundation/NSDebug.h>
+#import <Foundation/NSDictionary.h>
 #import <Foundation/NSException.h>
 #import <Foundation/NSInvocation.h>
 #import <Foundation/NSLock.h>
 #import <Foundation/NSMapTable.h>
 #import <Foundation/NSNotification.h>
+#import <Foundation/NSPathUtilities.h>
 #import <Foundation/NSPort.h>
 #import <Foundation/NSPortCoder.h>
 #import <Foundation/NSPortMessage.h>
 #import <Foundation/NSRunLoop.h>
+#import <Foundation/NSString.h>
 #import <Foundation/NSValue.h>
 
 #include <dbus/dbus.h>

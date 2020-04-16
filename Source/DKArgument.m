@@ -56,6 +56,7 @@
 #include "config.h"
 #undef INCLUDE_RUNTIME_H
 
+#include <inttypes.h>
 #include <string.h>
 #include <dbus/dbus.h>
 
@@ -358,6 +359,7 @@ DKDBusTypeForUnboxingObject(id object)
  *  DKArgument encapsulates D-Bus argument information
  */
 @implementation DKArgument
+
 + (void) initialize
 {
   if ([DKArgument class] != self)
@@ -1068,7 +1070,7 @@ DKDBusTypeForUnboxingObject(id object)
   // Check that the method contains the expected type.
   int iterType = dbus_message_iter_get_arg_type(iter);
   NSAssert3((iterType == DBusType),
-    @"Type mismatch between D-Bus message and introspection data. Got '%ld', expected '%ld' in method %@." ,
+    @"Type mismatch between D-Bus message and introspection data. Got '%d', expected '%d' in method %@." ,
       iterType, DBusType, [parent name]);
 
   if (doBox)
@@ -1135,7 +1137,7 @@ DKDBusTypeForUnboxingObject(id object)
 
   // Check that the method contains the expected type.
   NSAssert3((iterType == DBusType),
-    @"Type mismatch between D-Bus message and introspection data. Got '%ld', expected '%ld' in method %@." ,
+    @"Type mismatch between D-Bus message and introspection data. Got '%d', expected '%d' in method %@." ,
       iterType, DBusType, [parent name]);
 
   dbus_message_iter_get_basic(iter, (void*)&buffer);
@@ -1155,7 +1157,7 @@ DKDBusTypeForUnboxingObject(id object)
 
   // Check that the method contains the expected type.
   NSAssert3((iterType == DBusType),
-    @"Type mismatch between D-Bus message and introspection data. Got '%ld', expected '%ld' in method %@." ,
+    @"Type mismatch between D-Bus message and introspection data. Got '%d', expected '%d' in method %@." ,
       iterType, DBusType, [parent name]);
 
   dbus_message_iter_get_basic(iter, (void*)&buffer);
@@ -1564,7 +1566,7 @@ DKDBusTypeForUnboxingObject(id object)
   if (childCount != 1)
   {
     NSWarnMLog(@"Invalid number of children (%"PRIuPTR") for D-Bus array argument",
-      childCount);
+      (unsigned long) childCount);
     [self release];
     return nil;
   }
@@ -1961,8 +1963,8 @@ DKDBusTypeForUnboxingObject(id object)
       @"Could not marshall object '%@' as D-Bus struct: Expected %"PRIuPTR""
       @" members, got %"PRIuPTR".",
       object,
-      [object count],
-      childCount);
+      (unsigned long) [object count],
+      (unsigned long) childCount);
   }
 
   DK_ITER_OPEN_CONTAINER(iter, DBUS_TYPE_STRUCT, NULL, &subIter);
@@ -2263,7 +2265,7 @@ static Class NSCFBooleanClass;
   if (childCount != 2)
   {
     NSWarnMLog(@"Invalid number of children (%"PRIuPTR") for D-Bus dict entry argument. Ignoring argument.",
-      childCount);
+      (unsigned long) childCount);
     [self release];
     return nil;
   }

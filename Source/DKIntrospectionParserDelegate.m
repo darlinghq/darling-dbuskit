@@ -38,6 +38,8 @@
 #import <Foundation/NSNull.h>
 #import <Foundation/NSXMLParser.h>
 
+#include <inttypes.h>
+
 @interface DKIntrospectionParserDelegate (StackManagement)
 - (void)pushToStack: (id)obj;
 - (void)popStack;
@@ -122,7 +124,7 @@ didStartElement: (NSString*)aNode
   NSDebugLog(@"Starting <%@> node '%@' at depth %"PRIuPTR".",
     aNode,
     theName,
-    xmlDepth);
+    (unsigned long) xmlDepth);
 
   if ([@"node" isEqualToString: aNode])
   {
@@ -224,7 +226,7 @@ didStartElement: (NSString*)aNode
     NSDebugMLog(@"Ignoring <%@> node '%@' at depth %"PRIuPTR".",
       aNode,
       theName,
-      xmlDepth);
+      (unsigned long) xmlDepth);
     newNode = [[DKIntrospectionNode alloc] initWithName: theName
                                                  parent: leaf];
   }

@@ -34,7 +34,7 @@ typedef struct {
   id target;
   SEL selector;
   id object;
-  intptr_t* returnPointer;
+  NSInteger* returnPointer;
 } DKRingBufferElement;
 
 /**

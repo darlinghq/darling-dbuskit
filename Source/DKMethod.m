@@ -30,6 +30,7 @@
 #import <Foundation/NSNull.h>
 #import <Foundation/NSString.h>
 #import <Foundation/NSXMLNode.h>
+#import <Foundation/NSKeyValueCoding.h>
 
 #import "DKArgument.h"
 #import "DKMethod.h"
@@ -49,7 +50,7 @@
 #include <dbus/dbus.h>
 #include <stdint.h>
 #include <string.h>
-
+#include <inttypes.h>
 
 
 @implementation DKMethod
@@ -416,7 +417,7 @@
       typeChar = [arg unboxedObjCTypeChar];
     }
 
-    [typeString appendFormat: @"%s%"PRIuPTR"", typeChar, offset];
+    [typeString appendFormat: @"%s%"PRIuPTR"", typeChar, (unsigned long) offset];
 
     if (doBox)
     {
@@ -841,7 +842,7 @@
 
       if (nil == argName)
       {
-        argName = [NSString stringWithFormat: @"argument%ld", inIndex];
+        argName = [NSString stringWithFormat: @"argument%ld", (unsigned long) inIndex];
       }
       [declaration appendFormat:@"%@: (%@)%@ ",
         [components objectAtIndex: inIndex],

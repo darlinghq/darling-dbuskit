@@ -44,6 +44,8 @@
 #import "DKEndpoint.h"
 #import "DKProxy+Private.h"
 
+#include <stdlib.h>
+
 @implementation DKInterface
 
 

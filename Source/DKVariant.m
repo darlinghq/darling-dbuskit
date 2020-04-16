@@ -26,6 +26,8 @@
 #import <Foundation/NSLocale.h>
 #import <Foundation/NSString.h>
 
+#include <string.h>
+
 @implementation DKVariant
 
 + (id) variantWithObject: (id)obj

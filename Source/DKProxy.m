@@ -52,10 +52,13 @@
 #import <Foundation/NSValue.h>
 #import <Foundation/NSXMLNode.h>
 #import <Foundation/NSXMLParser.h>
+#import <Foundation/NSPathUtilities.h>
 #import <GNUstepBase/GSObjCRuntime.h>
 #import <GNUstepBase/NSDebug+GNUstepBase.h>
 
 #include <string.h>
+
+@class NSPortCoder;
 
 /*
  * Definitions of the strings used for selector mangling.
@@ -553,7 +556,7 @@ NSString *kDKDBusDocType = @"<!DOCTYPE node PUBLIC \"-//freedesktop//DTD D-BUS O
   IMP retrieveDBusMethod = class_getMethodImplementation([DKInterface class],
     retrievalSelector);
   NSRunLoop *rl = nil;
-  BOOL inWorkerThread = DKInWorkerThread;
+  BOOL inWorkerThread = [[DKEndpointManager sharedEndpointManager] isSynchronizing] || DKInWorkerThread;
   NSAssert(retrieveDBusMethod, @"No method retrieval implementation in DKInterface.");
   if (inWorkerThread)
   {
@@ -1226,7 +1229,7 @@ NSString* DKBusReconnectedNotification = @"DKBusReconnectedNotification";
   return self;
 }
 
-- (void)release
+- (oneway void)release
 {
   // No-Op.
 }

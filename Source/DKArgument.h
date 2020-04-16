@@ -25,7 +25,7 @@
 #import "DKIntrospectionNode.h"
 
 #include <dbus/dbus.h>
-#include "config.h"
+#import "config.h"
 
 #if HAVE_LIBCLANG
 #include <clang-c/Index.h>

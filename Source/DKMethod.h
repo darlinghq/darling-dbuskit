@@ -25,7 +25,7 @@
 #import "DKIntrospectionNode.h"
 
 #define INCLUDE_RUNTIME_H
-#include "config.h"
+#import "config.h"
 #undef INCLUDE_RUNTIME_H
 
 #include <dbus/dbus.h>

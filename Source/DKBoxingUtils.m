@@ -25,7 +25,9 @@
 #import "DKArgument.h"
 #import "DKProxy+Private.h"
 
+#define INCLUDE_RUNTIME_H
 #import "config.h"
+#undef INCLUDE_RUNTIME_H
 
 #import <Foundation/NSData.h>
 #import <Foundation/NSDictionary.h>
@@ -37,6 +39,8 @@
 
 #include <dbus/dbus.h>
 #include <wctype.h>
+#include <stdlib.h>
+
 Class
 DKBuiltinObjCClassForDBusType(int type)
 {

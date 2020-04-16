@@ -37,6 +37,7 @@
 #import "DKProxy+Private.h"
 #import "DKEndpoint.h"
 
+#include <inttypes.h>
 #include <dbus/dbus.h>
 
 @interface DKNotificationCenter (Private)
@@ -142,7 +143,7 @@
   NSUInteger index = 0;
   while (index < (numArgs))
   {
-    NSString *key = [NSString stringWithFormat: @"arg%"PRIuPTR"", index];
+    NSString *key = [NSString stringWithFormat: @"arg%"PRIuPTR"", (unsigned long) index];
     DKArgument *arg = (DKArgument*)[args objectAtIndex: index];
     NSString *annotatedKey = [arg annotationValueForKey: @"org.gnustep.openstep.notification.key"];
 
@@ -185,7 +186,7 @@
   NSUInteger index = 0;
   for (index = 0; index < numArgs; index++)
   {
-    NSString *key = [NSString stringWithFormat: @"arg%"PRIuPTR"", index];
+    NSString *key = [NSString stringWithFormat: @"arg%"PRIuPTR"", (unsigned long) index];
     DKArgument *arg = (DKArgument*)[args objectAtIndex: index];
     NSString *annotatedKey = [arg annotationValueForKey: @"org.gnustep.openstep.notification.key"];
 

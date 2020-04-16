@@ -28,6 +28,7 @@
 #import "DKMethodReturn.h"
 #import "DKIntrospectionParserDelegate.h"
 
+#import <Foundation/NSArray.h>
 #import <Foundation/NSData.h>
 #import <Foundation/NSLock.h>
 #import <Foundation/NSDictionary.h>
@@ -36,6 +37,7 @@
 #import <Foundation/NSInvocation.h>
 #import <Foundation/NSXMLParser.h>
 #import <Foundation/NSXMLNode.h>
+#import <Foundation/NSPathUtilities.h>
 
 #import <GNUstepBase/NSDebug+GNUstepBase.h>
 
