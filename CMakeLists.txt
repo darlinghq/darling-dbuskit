@@ -10,6 +10,12 @@ include_directories(
 	${PC_DBUS_INCLUDE_DIRS}
 )
 
+add_compile_definitions(
+	# tells the objc API headers to use the generically-typed function declarations for `objc_msgSend` and friends
+	# (Apple really wants people to cast the functions before using them)
+	OBJC_OLD_DISPATCH_PROTOTYPES=1
+)
+
 set(DBusKit_sources
 	Source/DKArgument.m
 	Source/DKBoxingUtils.m
