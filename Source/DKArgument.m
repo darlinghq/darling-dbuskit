@@ -990,7 +990,7 @@ DKDBusTypeForUnboxingObject(id object)
        IMP unboxFun = [value methodForSelector: aSelector];
 
        // Cast to void* first so that we don't get any funny implicit casts
-       *buffer = (long long)(uintptr_t)(void*)unboxFun(value, aSelector);
+       *buffer = (long long)(uintptr_t)(void*)((id(*)(id, SEL))unboxFun)(value, aSelector);
        return YES;
      }
    }

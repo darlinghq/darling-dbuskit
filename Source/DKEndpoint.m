@@ -677,7 +677,7 @@ static IMP performOnWorkerThread;
 #define performOnWorkerThreadSelector @selector(boolReturnForPerformingSelector:target:data:waitForReturn:)
 
 #define doPerformOnWorkerThread(target,selector,data,doWait) \
-  performOnWorkerThread(theManager, performOnWorkerThreadSelector, selector, target, data, doWait)
+  ((id(*)(id, SEL, SEL, id, void*, BOOL))performOnWorkerThread)(theManager, performOnWorkerThreadSelector, selector, target, data, doWait)
 
 #define ctxPerformOnWorkerThread(selector,data) doPerformOnWorkerThread(ctx,selector,data, NO)
 #define syncCtxPerformOnWorkerThread(selector,data) (BOOL)(uintptr_t)doPerformOnWorkerThread(ctx,selector,data, YES)

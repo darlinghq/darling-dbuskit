@@ -75,8 +75,8 @@ static SEL getServiceNameSelector;
 static IMP getEndpoint;
 static IMP getServiceName;
 
-#define DK_PORT_ENDPOINT getEndpoint(port, getEndpointSelector)
-#define DK_PORT_SERVICE getServiceName(port, getServiceNameSelector)
+#define DK_PORT_ENDPOINT ((id(*)(id, SEL))getEndpoint)(port, getEndpointSelector)
+#define DK_PORT_SERVICE ((id(*)(id, SEL))getServiceName)(port, getServiceNameSelector)
 
 
 @interface DKProxy (DKProxyInternal)
@@ -593,7 +593,7 @@ NSString *kDKDBusDocType = @"<!DOCTYPE node PUBLIC \"-//freedesktop//DTD D-BUS O
   {
     // If an interface was marked active, try to find the selector there first
     // (the interface will perform its own locking).
-    m = retrieveDBusMethod(activeInterface, retrievalSelector, aSel);
+    m = ((id(*)(id, SEL, SEL))retrieveDBusMethod)(activeInterface, retrievalSelector, aSel);
   }
   if (nil == m)
   {
@@ -601,7 +601,7 @@ NSString *kDKDBusDocType = @"<!DOCTYPE node PUBLIC \"-//freedesktop//DTD D-BUS O
     DKInterface *thisIf = nil;
     while ((nil == m) && (nil != (thisIf = [ifEnum nextObject])))
     {
-      m = retrieveDBusMethod(thisIf, retrievalSelector, aSel);
+      m = ((id(*)(id, SEL, SEL))retrieveDBusMethod)(thisIf, retrievalSelector, aSel);
     }
   }
 
@@ -999,7 +999,7 @@ NSString *kDKDBusDocType = @"<!DOCTYPE node PUBLIC \"-//freedesktop//DTD D-BUS O
     while ((nil != (thisIf = [ifEnum nextObject]))
       && (nil == property))
     {
-      NSDictionary *propDict = getProps(thisIf, propertiesSel);
+      NSDictionary *propDict = ((id(*)(id, SEL))getProps)(thisIf, propertiesSel);
       property = [propDict objectForKey: key];
     }
   }

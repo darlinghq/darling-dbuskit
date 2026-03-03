@@ -617,7 +617,7 @@ if (NO == DKRingEmpty)\
       target);
     if (YES == doWait)
     {
-      retVal = (BOOL)(intptr_t)performRequest(target, selector, data);
+      retVal = (BOOL)(intptr_t)((id(*)(id, SEL, id))performRequest)(target, selector, data);
       if (performSynchronized)
       {
         [synchronizationStateLock unlock];
@@ -677,7 +677,7 @@ if (NO == DKRingEmpty)\
     {
       NS_DURING
       {
-        *returnPointer = (NSInteger)performRequest(element.target,
+        *returnPointer = (NSInteger)((id(*)(id, SEL, id))performRequest)(element.target,
           element.selector,
           element.object);
       }
@@ -694,7 +694,7 @@ if (NO == DKRingEmpty)\
     {
       // If no return pointer is set, the other thread is not waiting for
       // completion.
-      performRequest(element.target, element.selector, element.object);
+      ((void(*)(id, SEL, id))performRequest)(element.target, element.selector, element.object);
     }
   }
   else
