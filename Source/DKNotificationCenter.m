@@ -1325,8 +1325,8 @@ static DKEndpointManager *manager;
 
     while (nil != (thisObservable = NSNextHashEnumeratorItem(&observableEnum)))
     {
-      NSDictionary *rules = getRules(thisObservable, ruleSel);
-      if ((BOOL)(uintptr_t)matchesUserInfo(observable, matchSel, rules))
+      NSDictionary *rules = ((id(*)(id, SEL))getRules)(thisObservable, ruleSel);
+      if ((BOOL)(uintptr_t)((id(*)(id, SEL, id))matchesUserInfo)(observable, matchSel, rules))
       {
         [thisObservable removeObservationsForObserver: observer];
 	// If we removed the last observation, add the observable to the cleanup
