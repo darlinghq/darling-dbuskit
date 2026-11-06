@@ -332,7 +332,7 @@
   IMP installMethod = [self methodForSelector: installationSelector];
   while (nil != (method = [methodEnum nextObject]))
   {
-    installMethod(self, installationSelector, method);
+    ((void(*)(id, SEL, id))installMethod)(self, installationSelector, method);
   }
 }
 
@@ -350,11 +350,11 @@
     BOOL mutatorExists = (nil != [self DBusMethodForSelector: NSSelectorFromString([mutator selectorString])]);
     if ((nil != accessor) && (NO == accessorExists))
     {
-      installMethod(self, installationSelector, accessor);
+      ((void(*)(id, SEL, id))installMethod)(self, installationSelector, accessor);
     }
     if ((nil != mutator) && (NO == mutatorExists))
     {
-      installMethod(self, installationSelector, mutator);
+      ((void(*)(id, SEL, id))installMethod)(self, installationSelector, mutator);
     }
   }
 }
@@ -368,7 +368,7 @@
     registrationSelector);
   while (nil != (signal = [signalEnum nextObject]))
   {
-    registerSignal(signal, registrationSelector, center);
+    ((void(*)(id, SEL, id))registerSignal)(signal, registrationSelector, center);
   }
 }
 

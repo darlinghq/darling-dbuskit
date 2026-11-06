@@ -337,7 +337,7 @@
   {
     // Determine wether the manager is in synchronized mode and we need to use
     // the runloop.
-    BOOL useCurrentRunLoop = ((BOOL)(uintptr_t)isSynchronizing(manager, @selector(isSynchronizing))
+    BOOL useCurrentRunLoop = ((BOOL)(uintptr_t)((id(*)(id, SEL))isSynchronizing)(manager, @selector(isSynchronizing))
     || ([[NSThread currentThread] isEqual: [manager workerThread]]));
 
     // If we are using the worker thread, we can yield aggressively until the
